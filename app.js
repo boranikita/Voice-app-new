@@ -332,7 +332,7 @@ function downloadCSV() {
   
   statusEl.innerHTML = "📥 <strong style='color:#0056b3;'>Downloading...</strong>";
 
-  let csv = "Point/Area,Before Activation,Before Energy,After Activation,After Energy\n";
+  let csv = "Chakra,Before Activation,Before Energy,After Activation,After Energy\n";
   for (let c in tableData) {
     csv += `${tableData[c].originalName},${tableData[c].before.activation},${tableData[c].before.energy},${tableData[c].after.activation},${tableData[c].after.energy}\n`;
   }
