@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Voice & Click Energy Tracker</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 20px;
+      max-width: 900px;
+      background-color: #e6f2ff; 
+    }
+    
+    .header-container {
+      display: flex;
+      align-items: center;
+      gap: 15px;
+      margin-bottom: 20px;
+    }
+
+    .header-container img {
+      width: 60px;
+      height: 60px;
+      border-radius: 50%;
+      background: white;
+      padding: 5px;
+      border: 2px solid #17a2b8;
+    }
+
+    h1 {
+      color: #333;
+      margin: 0;
+    }
+
+    .instructions-corner {
+      position: absolute;
+      top: 20px;
+      right: 20px;
+      width: 290px;
+      background: white;
+      border: 1px solid #17a2b8;
+      border-left: 5px solid #17a2b8;
+      padding: 15px;
+      border-radius: 8px;
+      font-size: 0.95em;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+      line-height: 1.4;
+    }
+    
+    @media (max-width: 1250px) {
+      .instructions-corner {
+        position: static;
+        width: auto;
+        margin-bottom: 20px;
+      }
+    }
+
+    .controls {
+      margin-bottom: 20px;
+      padding: 15px;
+      background: #f8f9fa;
+      border-radius: 8px;
+      border: 1px solid #ddd;
+      display: flex;
+      align-items: center;
+      gap: 15px;
+    }
+    .btn-main {
+      padding: 10px 15px;
+      cursor: pointer;
+      font-size: 16px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      background-color: #fff;
+    }
+    .btn-main:hover { background-color: #e9ecef; }
+    
+    #status { font-size: 1.1em; }
+    #heardStatus { color: #0056b3; font-style: italic; }
+
+    .palette {
+      background: #f8f9fa;
+      padding: 15px;
+      border-radius: 8px;
+      margin-bottom: 20px;
+      border: 1px solid #ddd;
+    }
+    .palette-row {
+      margin-bottom: 10px;
+      display: flex;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+    .palette-row strong { width: 90px; }
+    .opt-btn {
+      padding: 8px 12px;
+      border: 1px solid #bbb;
+      border-radius: 20px;
+      background: white;
+      cursor: pointer;
+      transition: background-color 0.2s;
+    }
+    .opt-btn:hover { background: #d4f7d4; }
+    
+    .active-btn {
+      background-color: #28a745 !important;
+      color: white;
+      border-color: #28a745;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 10px;
+      text-align: center;
+      background: white; 
+    }
+    th, td {
+      border: 1px solid #ccc;
+      padding: 10px;
+    }
+    th { background-color: #eee; }
+    .transition-bg { transition: background-color 0.3s ease, color 0.3s ease; }
+
+    .speak-btn {
+      background: none; border: none; font-size: 1.2em; cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="header-container">
+    <img src="https://cdn-icons-png.flaticon.com/512/1754/1754218.png" alt="Person Speaking Symbol">
+    <h1>Pranic Healing voice input chakra status</h1>
+  </div>
+
+  <div class="instructions-corner">
+    <strong>Voice Commands:</strong><br>
+    🗣️Say the Chakra name, then the Phase, Mode, and State.<br><br>
+    A <span style="color: #28a745; font-weight: bold;">green mark</span> will show that the correct option is selected.<br><br>
+    🗣️ "Download CSV" - Saves your file instantly<br><br>
+    <em>Tip:<em><br>
+    <em>1. Users can press the 🔊 symbol next to a chakra name to hear its pronunciation.</em><br>
+    <em>2. At any point user can press <strong>Stop Mic</strong> and press <strong>Start Mic</strong> again to restart.<br>
+    <em>3. At any point users can click the options also instead of speaking</em><br>
+  </div>
+
+  <div class="controls">
+    <button class="btn-main" id="startRecording">🎤 Start Mic</button>
+    <button class="btn-main" id="stopRecording">⛔ Stop Mic</button>
+    <button class="btn-main" onclick="downloadCSV()">📥 Download</button>
+    <span id="status">⛔ <strong>Stopped</strong></span>
+    <span id="heardStatus">Waiting for speech...</span>
+  </div>
+
+  <div class="palette" id="options">
+    <div class="palette-row">
+      <strong>1. Chakra:</strong>
+      <div id="chakra-buttons-container"></div>
+    </div>
+    <div class="palette-row">
+      <strong>2. Phase:</strong>
+      <button class="opt-btn" id="btn-phase-before" onclick="selectPhase('before')">Before</button>
+      <button class="opt-btn" id="btn-phase-after" onclick="selectPhase('after')">After</button>
+    </div>
+    <div class="palette-row">
+      <strong>3. Mode:</strong>
+      <button class="opt-btn" id="btn-mode-activation" onclick="selectMode('activation')">Activation</button>
+      <button class="opt-btn" id="btn-mode-energy" onclick="selectMode('energy')">Energy</button>
+    </div>
+    <div class="palette-row">
+      <strong>4. State:</strong>
+      <button class="opt-btn" onclick="selectValue('O')">Overactivated (O)</button>
+      <button class="opt-btn" onclick="selectValue('U')">Underactivated (U)</button>
+      <button class="opt-btn" onclick="selectValue('N')">Normal (N)</button>
+      <button class="opt-btn" onclick="selectValue('C')">Congested (C)</button>
+      <button class="opt-btn" onclick="selectValue('D')">Depleted (D)</button>
+    </div>
+  </div>
+
+  <table>
+    <thead>
+      <tr>
+        <th rowspan="2">Point / Area</th>
+        <th colspan="2" id="th-before" class="transition-bg">Before</th>
+        <th colspan="2" id="th-after" class="transition-bg">After</th>
+      </tr>
+      <tr>
+        <th id="th-before-activation" class="transition-bg">Activation</th>
+        <th id="th-before-energy" class="transition-bg">Energy</th>
+        <th id="th-after-activation" class="transition-bg">Activation</th>
+        <th id="th-after-energy" class="transition-bg">Energy</th>
+      </tr>
+    </thead>
+    <tbody id="dynamicTableBody">
+      </tbody>
+  </table>
+
+  <script src="app.js"></script>
+</body>
+</html>
