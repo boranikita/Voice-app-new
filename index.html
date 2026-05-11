@@ -65,6 +65,7 @@
       align-items: center;
       gap: 15px;
     }
+    
     .btn-main {
       padding: 10px 15px;
       cursor: pointer;
@@ -85,6 +86,7 @@
       margin-bottom: 20px;
       border: 1px solid #ddd;
     }
+    
     .palette-row {
       margin-bottom: 10px;
       display: flex;
@@ -92,9 +94,17 @@
       flex-wrap: wrap;
       gap: 8px;
     }
-    .palette-row strong { width: 90px; }
+    
+    /* --- MADE THIS BIGGER --- */
+    .palette-row strong { 
+      width: 110px; 
+      font-size: 1.2em; /* Increases "1. Chakra:" text size */
+    }
+    
+    /* --- MADE THIS BIGGER --- */
     .opt-btn {
-      padding: 8px 12px;
+      padding: 10px 15px; /* Adds more space inside the buttons */
+      font-size: 1.1em; /* Increases the button text size */
       border: 1px solid #bbb;
       border-radius: 20px;
       background: white;
@@ -109,18 +119,23 @@
       border-color: #28a745;
     }
 
+    /* --- MADE THIS BIGGER --- */
     table {
       width: 100%;
       border-collapse: collapse;
       margin-top: 10px;
       text-align: center;
       background: white; 
+      font-size: 1.2em; /* Increases all text inside the table */
     }
+    
+    /* --- MADE THIS BIGGER --- */
     th, td {
       border: 1px solid #ccc;
-      padding: 10px;
+      padding: 15px; /* Increased padding so big text has room */
     }
     th { background-color: #eee; }
+    
     .transition-bg { transition: background-color 0.3s ease, color 0.3s ease; }
 
     .speak-btn {
@@ -136,20 +151,17 @@
   </div>
 
   <div class="instructions-corner">
-    <strong>Voice Commands:</strong><br>
-    🗣️Say the Chakra name, then the Phase, Mode, and State.<br><br>
-    A <span style="color: #28a745; font-weight: bold;">green mark</span> will show that the correct option is selected.<br><br>
-    🗣️ "Download CSV" - Saves your file instantly<br><br>
-    <em>Tip:<em><br>
-    <em>1. Users can press the 🔊 symbol next to a chakra name to hear its pronunciation.</em><br>
-    <em>2. At any point user can press <strong>Stop Mic</strong> and press <strong>Start Mic</strong> again to restart.<br>
-    <em>3. At any point users can click the options also instead of speaking</em><br>
+    <strong>Data Entry Voice Commands:</strong><br>
+    Say the Chakra name, then the Phase, Mode, and State. A green mark confirms your selection.<br><br>
+    <strong>System Voice Command:</strong><br>
+    🗣️ <em>"Download"</em> - Saves your file instantly<br><br>
+    <em>Tip: Press the 🔊 symbol next to a chakra name to hear its pronunciation.</em>
   </div>
 
   <div class="controls">
     <button class="btn-main" id="startRecording">🎤 Start Mic</button>
     <button class="btn-main" id="stopRecording">⛔ Stop Mic</button>
-    <button class="btn-main" onclick="downloadCSV()">📥 Download</button>
+    <button class="btn-main" onclick="downloadCSV()">📥 Download CSV</button>
     <span id="status">⛔ <strong>Stopped</strong></span>
     <span id="heardStatus">Waiting for speech...</span>
   </div>
